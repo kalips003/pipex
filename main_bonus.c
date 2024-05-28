@@ -6,7 +6,7 @@ static int ini_pip(t_pip *pip, int ac, char **av)
 {
     if (same_str(av[1], "here_doc"))
     {
-        ft_heredoc(av, pip);
+        ft_heredoc(av);
         pip->outfile = open(av[ac - 1], W_AP, 0777);
         pip->first_cmd = 3;
     }
