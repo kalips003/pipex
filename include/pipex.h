@@ -34,7 +34,7 @@ typedef struct s_pip {
 
 /*              A OUTILS               */
 // static int		same_str_n(char *gnl0, char *stop_w)
-void	ft_heredoc(char **av, t_pip *pip);
+void	ft_heredoc(char **av);
 void    ft_child(char *raw_cmd, char **env, t_pip *pip);
 void    dup_close(int fd_replace, int fd_erase);
 

@@ -26,7 +26,7 @@ void dup_close(int fd_replace, int fd_erase)
 
 ////////////////////////////////////////////////////////
 // add the \n to arg, check if same as gnl(0)
-void	ft_heredoc(char **av, t_pip *pip)
+void	ft_heredoc(char **av)
 {
 	int		fd[2];
 	pid_t 	pid;
@@ -36,7 +36,7 @@ void	ft_heredoc(char **av, t_pip *pip)
         return (perror("pipe"));
     pid = fork();
     if (pid == -1)
-        return (perror("fork"));
+		return (perror("fork"));
 	if (!pid)
 	{
 		close(fd[0]);

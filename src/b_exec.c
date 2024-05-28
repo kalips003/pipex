@@ -39,7 +39,9 @@ static char *find_cmd(char *command, char **env)
 
     rtrn = NULL;
     if (!command)
+    {
         return (NULL);
+    }
 	if (find_str(command, "/") >= 0)
     {
         if (access(command, X_OK) == 0)
