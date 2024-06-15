@@ -17,7 +17,7 @@ OUTFILE_OK = out_file_ok
 HEREDOC = here_doc STOP
 
 ARGS1 = "wc -c" "wc -c" "wc -c" "wc -c"
-BASH1 = < wc -c | wc -c | wc -c | wc -c >
+BASH1 = wc -c | wc -c | wc -c | wc -c
 
 ARGS2 = "ls -la" "ls -la"
 BASH2 = ls -la | ls -la
@@ -41,6 +41,8 @@ b: libft $(NAME_BONUS) files
 d:
 	cat << END | cat >> out_file_ok
 
+v: libft $(NAME) files
+	$(call mandatory_valgrind,  $(ARGS1), $(BASH1));
 
 # ---------------------
 maieul: $(NAME) $(NAME_BONUS)
@@ -61,21 +63,24 @@ define mandatory
 	./$(NAME) $(INFILE) $(1) $(OUTFILE)
 	@echo "\n\tOutfile content:"
 	@cat $(OUTFILE)
-	@$(call random_shmol_cat, teshting: $(1) !, should output:, , )
+	@$(call random_shmol_cat, teshting: $(1) !, outputs should be identical:, , )
 	< $(INFILE) $(2) > $(OUTFILE_OK)
 	@echo "\n\tOutfile control content:"
 	@cat $(OUTFILE_OK)
 endef
 
-v: libft $(NAME) files
-	@$(call random_shmol_cat, teshting ... $@ !, " $(NAME): ", $(CLS), );
-	-$(VALGRIND) ./$(NAME) $(INFILE) $(ARGS2) $(OUTFILE)
+define mandatory_valgrind
+	@clear
+	@$(call random_shmol_cat, teshting ... $@ !, "$(NAME):", , )
+	-$(VALGRIND) ./$(NAME) $(INFILE) $(1) $(OUTFILE)
 	@echo "\n\tOutfile content:"
 	@cat $(OUTFILE)
-	@$(call random_shmol_cat, teshting:  $(ARGS1)  !, should output:, , );
-	-< $(INFILE) $(BASH2) > $(OUTFILE)
+	@$(call random_shmol_cat, teshting: $(1) !, outputs should be identical:, , )
+	< $(INFILE) $(2) > $(OUTFILE_OK)
 	@echo "\n\tOutfile control content:"
-	-@cat $(OUTFILE)
+	@cat $(OUTFILE_OK)
+endef
+
 # ------------------------------------------
 # # map=$$($(eval echo $$arg));
 # m: libft mlx $(NAME)
@@ -225,7 +230,7 @@ git: fclean
 	git commit -m "$$current_date"; \
 	git push
 
-NORM_FILE = src_bonus/
+NORM_FILE = src/
 
 norm: fclean
 	@$(call random_shmol_cat_blink, 掃除してるかな..、いいね、いいねえー, giv file to norm, $(CLS), );

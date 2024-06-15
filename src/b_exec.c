@@ -1,11 +1,60 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   b_exec.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kalipso <kalipso@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/15 17:11:51 by kalipso           #+#    #+#             */
+/*   Updated: 2024/06/15 17:11:51 by kalipso          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/pipex.h"
 
+void		ft_exec(char *raw_cmd, char **env);
+static char	**parse_path(char **env);
+static char	*find_parsing(char *command, char **env);
+static char	*find_cmd(char *command, char **env);
+
+///////////////////////////////////////////////////////////////////////////////]
+/*******************************************************************************
+	takes a raw cmd with arguments, execute it, end the child
+*******************************************************************************/
+// raw_cmd = "ls -la -lb"
+void	ft_exec(char *raw_cmd, char **env)
+{
+	char	**argve;
+	char	*cmd;
+
+	argve = split(raw_cmd, " ");
+	if (!argve)
+		return ;
+	cmd = find_cmd(argve[0], env);
+	if (!cmd)
+	{
+		dup2(STDERR_FILENO, 1);
+		put("error: command not found: %s\n", argve[0]);
+		free_tab(argve);
+		exit(1);
+	}
+	if (execve(cmd, argve, env) == -1)
+	{
+		dup2(STDERR_FILENO, 1);
+		perror("error execve");
+		free_tab(argve);
+		free(cmd);
+		exit(1);
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////]
 static char	**parse_path(char **env)
 {
 	while (*env)
 	{
 		if (*env[0] == 'P' && !find_str(*env, "PATH="))
-			return(split(&(*env)[5], ":"));
+			return (split(&(*env)[5], ":"));
 		env++;
 	}
 	return (NULL);
@@ -50,31 +99,4 @@ static char	*find_cmd(char *command, char **env)
 	}
 	rtrn = find_parsing(command, env);
 	return (rtrn);
-}
-
-// raw_cmd = "ls -la -lb"
-void	ft_exec(char *raw_cmd, char **env)
-{
-	char	**argve;
-	char	*cmd;
-
-	argve = split(raw_cmd, " ");
-	if (!argve)
-		return ;
-	cmd = find_cmd(argve[0], env);
-	if (!cmd)
-	{
-		dup2(STDERR_FILENO, 1);
-		put("error: command not found: %s\n", argve[0]);
-		free_tab(argve);
-		exit(1);
-	}
-	if (execve(cmd, argve, env) == -1)
-	{
-		dup2(STDERR_FILENO, 1);
-		perror("error execve");
-		free_tab(argve);
-		free(cmd);
-		exit(1);
-	}
 }
