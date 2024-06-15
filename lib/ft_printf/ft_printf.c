@@ -134,7 +134,7 @@ void	ft_print_cat(int num,  char *string2, int cls)
 
 	if (cls)
 		put(CLS);
-	put("\033[38;5;%dm\
+	put("\n\033[38;5;%dm\
 	\tにゃ~\033[38;5;%dm\t⠀╱|、\n\
 	\t\t(˚ˎ。7⠀⠀⠀\033[38;5;%dm~ %d ~\033[38;5;%dm\n\
 	\t\t⠀|、˜\\\t\t\t\033[38;5;%dm~ %s\033[38;5;%dm\n\

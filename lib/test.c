@@ -31,28 +31,11 @@
 ///////////////////////////////////////////////////////////////////////////////]
 int	main(int ac, char **av, char **env)
 {
-	put("we want:\n\
-		→ 0: cos=1, sin =0\n\
-		↓ 1: cos=0, sin =1\n\
-		← 2: cos=-1, sin =0\n\
-		↑ 3: cos=0, sin =-1\n");
-	int a;
-	int b;
-	int i = -1;
-	while (++i < 4)
-	{
-		b = (int)sin(i * PI / 2);
-		a = (int)cos(i * PI / 2);
-		printf("%d: cos= %.1d, sin = %.1d\n", i, a, b);
-	}
-	printf("(int)round(0.49)--->%d\n\n\n\n", (int)round(0.49));
-	ft_print_cat(33,  "char *string2", 1);
-	char *string = str("asdf%dalosdif", 123);
-	put("=%s=\n",  string);
-	free(string);
-	put(BLINK"->BREAK POINT:\n");
-	free_s(gnl(0));
-	put(CLS"=hello  again=\n");
+	int outfile = open("test_file", W_AP, 0777);
+	ft_print_cat(1, "lakdjsfshla", 0);
+	print_fd(outfile, "this is a test that shoudl write");
+	close(outfile);
+
 	return (0);
 }
 ///////////////////////////////////////////////////////////////////////////////]
