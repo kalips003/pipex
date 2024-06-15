@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kalipso <kalipso@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/15 17:11:53 by kalipso           #+#    #+#             */
+/*   Updated: 2024/06/15 18:05:15 by kalipso          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
+///////////////////////////////////////////////////////////////////////////////]
 // ./pipex infile cmd1 cmd2 cmd3 outfile = 6
 // ./pipex heredoc STOP cmd1 cmd2 cmd3 outfile = 7
-static int ini_pip(t_pip *pip, int ac, char **av)
+static int	ini_pip(t_pip *pip, int ac, char **av)
 {
 	if (same_str(av[1], "here_doc"))
 	{
@@ -24,10 +37,11 @@ static int ini_pip(t_pip *pip, int ac, char **av)
 	return (1);
 }
 
+///////////////////////////////////////////////////////////////////////////////]
 // ./pipex infile cmd1 cmd2 cmd3 outfile = 6
 int	main(int ac, char **av, char **env)
 {
-	t_pip pip;
+	t_pip	pip;
 
 	if (ac < 5)
 		return (put("not enough args\n"), 1);
@@ -40,4 +54,3 @@ int	main(int ac, char **av, char **env)
 	ft_exec(av[pip.i], env);
 	return (0);
 }
-////////////////////////////////////////////////////////////
