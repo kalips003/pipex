@@ -17,7 +17,7 @@
 static void	ini_pip(t_pip *pip, int ac, char **av)
 {
 	ft_memset(pip, 0, sizeof(t_pip));
-	pip->infile = open(av[1], O_RDONLY | FD_CLOEXEC, 0777);
+	pip->infile = open(av[1], O_RDONLY);
 	pip->outfile = open(av[ac - 1], O_WRONLY | O_CREAT | O_TRUNC | \
 						FD_CLOEXEC, 0777);
 	if (pip->infile < 0 || pip->outfile < 0)
