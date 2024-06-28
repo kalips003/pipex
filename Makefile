@@ -19,30 +19,35 @@ HEREDOC = here_doc STOP
 ARGS1 = "wc -c" "wc -c" "wc -c" "wc -c"
 BASH1 = wc -c | wc -c | wc -c | wc -c
 
-ARGS2 = "ls -la" "ls -la"
-BASH2 = ls -la | ls -la
+ARGS2 = "ls -la" "wc -l"
+BASH2 = ls -la | wc -l
 
 ARGS3 = "cat" "cat"
 
 files:
-	@rm -f $(INFILE) $(OUTFILE) $(OUTFILE_OK)
+	@rm -f $(INFILE) $(OUTFILE) $(OUTFILE_OK) bad_outfile bad_outfile_2
 	@rm -f 
 	@touch $(INFILE)
 
 a: libft $(NAME) files
-	$(call mandatory,  $(ARGS1), $(BASH1));
+	$(call mandatory,  $(ARGS2), $(BASH2));
 
 b: libft $(NAME_BONUS) files
-	@$(call random_shmol_cat, teshting ... $@ !, "$(NAME_BONUS):", $(CLS)\n, )
-	./$(NAME_BONUS) here_doc END $(ARGS3) $(OUTFILE)
+	@$(call random_shmol_cat, teshting ... $@ !, "$(word 2, $^):", $(CLS)\n, )
+	./$(word 2, $^) here_doc END $(ARGS3) $(OUTFILE)
 	@echo "\n\tOutfile content:"
 	@cat $(OUTFILE)
 
-d:
-	cat << END | cat >> out_file_ok
+m: libft $(NAME) files
+	$(call mandatory_valgrind,  "wc -c" "wc -c" "wc -c" "wc -c", wc -c | wc -c | wc -c | wc -c);
+	$(call mandatory,  "ls -la" "/path/to/abc -a", ls -la | /path/to/abc -a);
+	-$(VALGRIND) ./$(NAME) bad_infile $(ARGS2) bad_outfile
+	< bad_infile $(BASH2) > bad_outfile_2
 
-v: libft $(NAME) files
-	$(call mandatory_valgrind,  $(ARGS1), $(BASH1));
+
+v: libft $(NAME_BONUS) files
+	$(call mandatory_valgrind,  "wc -c" "wc -c" "wc -c" "wc -c", wc -c | wc -c | wc -c | wc -c);
+	$(call mandatory_valgrind,  $(ARGS2), $(BASH2));
 
 # ---------------------
 maieul: $(NAME) $(NAME_BONUS)
@@ -59,14 +64,16 @@ maieul: $(NAME) $(NAME_BONUS)
 # -------------------------------------------------> PIPEX
 define mandatory
 	@clear
-	@$(call random_shmol_cat, teshting ... $@ !, "$(NAME):", , )
-	./$(NAME) $(INFILE) $(1) $(OUTFILE)
+	@$(call random_shmol_cat, teshting ... $(NAME): !, "$(1)", , )
+	-./$(NAME) $(INFILE) $(1) $(OUTFILE)
 	@echo "\n\tOutfile content:"
 	@cat $(OUTFILE)
-	@$(call random_shmol_cat, teshting: $(1) !, outputs should be identical:, , )
-	< $(INFILE) $(2) > $(OUTFILE_OK)
+	@$(call random_shmol_cat, control output should be identical:, , , )
+	-< $(INFILE) $(2) > $(OUTFILE_OK)
 	@echo "\n\tOutfile control content:"
 	@cat $(OUTFILE_OK)
+	@echo "\n\t\033[5m~ Press Enter to continue...\033[0m"; \
+ 	read -p "" key
 endef
 
 define mandatory_valgrind
@@ -75,10 +82,12 @@ define mandatory_valgrind
 	-$(VALGRIND) ./$(NAME) $(INFILE) $(1) $(OUTFILE)
 	@echo "\n\tOutfile content:"
 	@cat $(OUTFILE)
-	@$(call random_shmol_cat, teshting: $(1) !, outputs should be identical:, , )
+	@$(call random_shmol_cat, teshting: $(1) !, valgrinining:, , )
 	< $(INFILE) $(2) > $(OUTFILE_OK)
 	@echo "\n\tOutfile control content:"
 	@cat $(OUTFILE_OK)
+	@echo "\n\t\033[5m~ Press Enter to continue...\033[0m"; \
+ 	read -p "" key
 endef
 
 # ------------------------------------------
@@ -198,7 +207,7 @@ vtest:	libft
 
 # 
 clean:
-	@rm -rf $(OBJ_FOLDER) $(INFILE) $(OUTFILE) $(OUTFILE_OK)
+	@rm -rf $(OBJ_FOLDER) $(INFILE) $(OUTFILE) $(OUTFILE_OK) bad_outfile bad_outfile_2
 	$(call print_cat, $(CLEAR), $(COLOR_2R_2G_5B), $(COLOR_3R_2G_0B), $(COLOR_4R_5G_0B), $(call pad_word, 10, "Objects"), $(call pad_word, 12, "Exterminated"));
 
 fclean: clean
@@ -230,7 +239,7 @@ git: fclean
 	git commit -m "$$current_date"; \
 	git push
 
-NORM_FILE = src/
+NORM_FILE = include/
 
 norm: fclean
 	@$(call random_shmol_cat_blink, 掃除してるかな..、いいね、いいねえー, giv file to norm, $(CLS), );

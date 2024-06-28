@@ -6,7 +6,7 @@
 /*   By: kalipso <kalipso@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 17:11:53 by kalipso           #+#    #+#             */
-/*   Updated: 2024/06/26 11:26:32 by kalipso          ###   ########.fr       */
+/*   Updated: 2024/06/28 14:58:29 by kalipso          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,17 @@ static int	ini_pip(t_pip *pip, int ac, char **av)
 	if (same_str(av[1], "here_doc"))
 	{
 		ft_heredoc(av);
-		pip->outfile = open(av[ac - 1], W_AP, 0777);
+		pip->outfile = open(av[ac - 1], (O_WRONLY | O_CREAT | O_APPEND
+					| O_CLOEXEC), 0777);
 		pip->first_cmd = 3;
 	}
 	else
 	{
-		pip->infile = open(av[1], R_ONLY, 0777);
+		pip->infile = open(av[1], O_RDONLY);
 		if (pip->infile < 0)
 			return (perror(av[1]), 0);
-		pip->outfile = open(av[ac - 1], W_NEW, 0777);
+		pip->outfile = open(av[ac - 1], (O_WRONLY | O_CREAT | O_TRUNC
+					| O_CLOEXEC), 0777);
 		dup_close(pip->infile, STDIN_FILENO);
 		pip->first_cmd = 2;
 	}

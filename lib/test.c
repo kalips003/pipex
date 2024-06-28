@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   test.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kalipso <kalipso@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/28 14:55:36 by kalipso           #+#    #+#             */
+/*   Updated: 2024/06/28 15:44:11 by kalipso          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/libft.h"
 #include "../include/pipex.h"
 
@@ -20,38 +32,28 @@
 
 
 
-
-<?> .PHONY: test - This declares that test is a phony target, meaning it's not associated with a file. </?>
+<?> .PHONY: test - This declares that test is a phony target, 
+meaning it's not associated with a file. </?>
 
 * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 // MACRO
 // #define funct(ap, type)    (*(type *)((ap += sizeof(type)) - sizeof(type)))
-# define PI 3.14159265358979323846
-
 ///////////////////////////////////////////////////////////////////////////////]
 int	main(int ac, char **av, char **env)
 {
-	int outfile = open("test_file", W_AP, 0777);
+	int	outfile;
+
+	outfile = open("test_file", (O_WRONLY | O_CREAT | O_APPEND
+				| O_CLOEXEC), 0777);
 	ft_print_cat(1, "lakdjsfshla", 0);
 	print_fd(outfile, "this is a test that shoudl write");
 	close(outfile);
-
 	return (0);
 }
 ///////////////////////////////////////////////////////////////////////////////]
-void    f_()
-{
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-does somethign
-
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-}
 ///////////////////////////////////////////////////////////////////////////////]
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-
-
 //  			GITHUB
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 git pull
@@ -71,16 +73,13 @@ git push origin feature-branch:main
 	git stash
 // Switch Branches: After stashing your changes, you can switch branches.
 	git checkout <branch-name>
-// Apply Stashed Changes: When you're ready, you can apply your stashed changes to the new branch.
+// Apply Stashed Changes:  you can apply your stashed changes to the new branch.
 	git stash apply
-// Pop Stashed Changes: Alternativzely, you can apply and remove the stashed changes in one step.
+// Pop Stashed Changes: you can apply and remove the stashed changes in one step.
 	git stash pop
 // List Stashes: To see a list of stashed changes, you can use:
 	git stash list
 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
-
-
 //  			BIWISE
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 while (((condition1) & bit) || ((condition2) & ~bit))

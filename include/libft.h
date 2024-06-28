@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kalipso <kalipso@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 20:06:26 by agallon           #+#    #+#             */
-/*   Updated: 2024/06/11 18:25:01 by marvin           ###   ########.fr       */
+/*   Updated: 2024/06/28 15:03:42 by kalipso          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@
 // # 	GET NEXT LINE									///
 # define BUFFER_SIZE 32
 
-typedef struct s_gnl {
+typedef struct s_gnl
+{
 	char			buff[BUFFER_SIZE];
 	struct s_gnl	*next;
 }	t_gnl;

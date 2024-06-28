@@ -34,9 +34,9 @@ void	ft_exec(char *raw_cmd, char **env)
 	if (!cmd)
 	{
 		dup2(STDERR_FILENO, 1);
-		put("error: command not found: %s\n", argve[0]);
+		put("error: %s: not found\n", argve[0]);
 		free_tab(argve);
-		exit(1);
+		exit(127);
 	}
 	if (execve(cmd, argve, env) == -1)
 	{
