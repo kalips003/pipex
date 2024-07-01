@@ -4,6 +4,7 @@ NAME_BONUS = pipex_bonus
 CC = cc
 # FLAGS = -Wextra -Wall -Werror -g -fPIE
 FLAGS = -Wall -Werror -Wextra -g -fPIE -I$(HEADER_FOLDER) -lm
+FLAGS2 = -Wall -Werror -Wextra -g -fPIE -I$(HEADER_FOLDER)
 
 all: $(NAME)
 
@@ -26,7 +27,7 @@ ARGS3 = "cat" "cat"
 
 files:
 	@rm -f $(INFILE) $(OUTFILE) $(OUTFILE_OK) bad_outfile bad_outfile_2
-	@rm -f 
+	@rm -f
 	@touch $(INFILE)
 
 a: libft $(NAME) files
@@ -41,12 +42,17 @@ b: libft $(NAME_BONUS) files
 m: libft $(NAME) files
 	$(call mandatory_valgrind,  "wc -c" "wc -c" "wc -c" "wc -c", wc -c | wc -c | wc -c | wc -c);
 	$(call mandatory,  "ls -la" "/path/to/abc -a", ls -la | /path/to/abc -a);
+	$(call mandatory,  "ls -la" "path_to_troll -a", ls -la | path_to_troll -a);
+	$(call mandatory,  "ls -la", ls -la);
 	-$(VALGRIND) ./$(NAME) bad_infile $(ARGS2) bad_outfile
 	< bad_infile $(BASH2) > bad_outfile_2
-
+	chmod 000 $(INFILE)
+	$(call mandatory,  "ls -la" "wc -l", ls -la | wc -l);
+	chmod 777 $(INFILE)
+	$(call mandatory,  "ls -la" "cat", ls -la | cat);
+	-env -i /bin/$(VALGRIND) ./$(NAME) $(INFILE) $(ARGS2) $(OUTFILE);
 
 v: libft $(NAME_BONUS) files
-	$(call mandatory_valgrind,  "wc -c" "wc -c" "wc -c" "wc -c", wc -c | wc -c | wc -c | wc -c);
 	$(call mandatory_valgrind,  $(ARGS2), $(BASH2));
 
 # ---------------------
@@ -57,8 +63,8 @@ maieul: $(NAME) $(NAME_BONUS)
 	fi
 	@rm -f traces/trace*
 	strace -e dup2,dup,openat,clone,read,write,access,close,execve,pipe,pipe2 -tt -ff -o traces/trace \
-	./pipex in 'ls -la' 'wc -l' /dev/stdout
-	strace-log-merge traces/trace | batcat -lstrace
+	./pipex in 'ls -la' 'wc -l' /dev/stdout \
+	strace-log-merge traces/trace | batcat -lstrace \
 
 # $(ARGS2) $(BASH2)
 # -------------------------------------------------> PIPEX
@@ -89,21 +95,6 @@ define mandatory_valgrind
 	@echo "\n\t\033[5m~ Press Enter to continue...\033[0m"; \
  	read -p "" key
 endef
-
-# ------------------------------------------
-# # map=$$($(eval echo $$arg));
-# m: libft mlx $(NAME)
-# 	@for map in $(BAD_MAPS); do \
-# 	$(call random_shmol_cat, teshting lots of bad miaps:, $$map shouldt run..., $(CLS), ); \
-# 	$(VALGRIND) ./$(NAME) map/map_bad/$$map; \
-# 	echo "\t\033[5m~ Press Enter to continue...\033[0m"; \
-# 	read -p "" key; \
-# 	done
-# #
-# 	@$(call random_shmol_cat, "\'tis good map Mandatory", "try n break it.. にゃ?", $(CLS), );
-# 	@echo "\t\033[5m~ Press Enter to continue...\033[0m"
-# 	@read -p "" key
-# 	-$(VALGRIND) ./$(NAME) map/$(MAP3)
 
 # ╭──────────────────────────────────────────────────────────────────────╮
 # │                  	 	        Libft                      	         │
@@ -145,7 +136,7 @@ src/obj/%.o: src/%.c
 	@if [ ! -e $(OBJ_FOLDER) ]; then\
 		mkdir -p $(OBJ_FOLDER);\
 	fi
-	@if ! $(CC) -c $(FLAGS) $< -o $@; then \
+	@if ! $(CC) -c $(FLAGS2) $< -o $@; then \
 		$(call shmol_cat_error, $(RED), $(RED_L)); \
 		exit 1; \
 	fi
@@ -154,10 +145,10 @@ src/obj/%.o: src/%.c
 # │                  	 	       BONUS	                   	         │
 # ╰──────────────────────────────────────────────────────────────────────╯
 
-SRC_B = $(wildcard src_bonus/*.c)
-OBJ_B = $(patsubst src_bonus/%.c, src_bonus/obj/%.o, $(SRC_B))
+SRC_B = $(wildcard src/*.c)
+OBJ_B = $(patsubst src/%.c, src/obj/%.o, $(SRC_B))
 
-OBJ_FOLDER_B = src_bonus/obj
+OBJ_FOLDER_B = src/obj
 
 $(NAME_BONUS): bonus
 
@@ -205,7 +196,7 @@ vtest:	libft
 	$(call print_cat, "", $(RED), $(GOLD), $(BLUE1), $(call pad_word, 10, "TESTING"), $(call pad_word, 12, "SCIENCE.."));
 	@$(VALGRIND) lib/a.out
 
-# 
+#
 clean:
 	@rm -rf $(OBJ_FOLDER) $(INFILE) $(OUTFILE) $(OUTFILE_OK) bad_outfile bad_outfile_2
 	$(call print_cat, $(CLEAR), $(COLOR_2R_2G_5B), $(COLOR_3R_2G_0B), $(COLOR_4R_5G_0B), $(call pad_word, 10, "Objects"), $(call pad_word, 12, "Exterminated"));
