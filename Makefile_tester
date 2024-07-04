@@ -1,5 +1,5 @@
 # ------------------------------------------------------------------------------------------------------------- >
-# 
+#
 # 				████████╗███████╗░██████╗████████╗███████╗██╗░░░██╗██████╗░
 # 				╚══██╔══╝██╔════╝██╔════╝╚══██╔══╝██╔════╝██║░░░██║██╔══██╗
 # 				░░░██║░░░█████╗░░╚█████╗░░░░██║░░░█████╗░░██║░░░██║██████╔╝
@@ -37,13 +37,13 @@ b: $(NAMEE_BONUS)
 
 # 	TESTING several BAD cases scenario, and others break tests, with valgrind (most of the time)
 # 		replace the first dependency $(NAMEE) with your $(NAME_BONUS) to test bonus (without heredoc)
-# 
+#
 m: $(NAMEE) files
-	$(call mandatory,  "wc -c" "wc -c" "wc -c" "wc -c", wc -c | wc -c | wc -c | wc -c, $(VALGRIND), $(CLS))
-	$(call mandatory,  "wc -c" "wc -c", wc -c | wc -c, $(VALGRIND), $(CLS))
-	$(call mandatory,  "ls -la" "/path/to/abc -a", ls -la | /path/to/abc -a, , $(CLS))
-	$(call mandatory,  "ls -la" "path_to_troll -la", ls -la | path_to_troll -a, , $(CLS))
-	$(call mandatory,  "ls -la", ls -la, , $(CLS))
+	-$(call mandatory,  "wc -c" "wc -c" "wc -c" "wc -c", wc -c | wc -c | wc -c | wc -c, $(VALGRIND), $(CLS))
+	-$(call mandatory,  "wc -c" "wc -c", wc -c | wc -c, $(VALGRIND), $(CLS))
+	-$(call mandatory,  "ls -la" "/path/to/abc -a", ls -la | /path/to/abc -a, , $(CLS))
+	-$(call mandatory,  "ls -la" "path_to_troll -la", ls -la | path_to_troll -a, , $(CLS))
+	-$(call mandatory,  "ls -la", ls -la, , $(CLS))
 	@$(call random_shmol_cat, "teshting with bad_infile、chmod..", "$(word 1, $^):", $(CLS), )
 	-$(VALGRIND) ./$(word 1, $^) bad_infile $(ARGS2) bad_outfile
 	@echo
@@ -53,14 +53,14 @@ m: $(NAMEE) files
 	@echo "$(CLS)\033[0m\033[38;5;1m"
 	chmod 000 $(INFILE)
 	@echo "\033[0m"
-	$(call mandatory,  "ls -la" "wc -l", ls -la | wc -l, , );
+	-$(call mandatory,  "ls -la" "wc -l", ls -la | wc -l, , );
 	chmod 777 $(INFILE)
-	$(call mandatory,  "ls -la" "cat", ls -la | cat, , );
+	-$(call mandatory,  "ls -la" "cat", ls -la | cat, , );
 	@$(call random_shmol_cat, "teshting without environement variables..", "$(word 1, $^):", $(CLS), )
 	-env -i /bin/$(VALGRIND) ./$(word 1, $^) $(INFILE) $(ARGS2) $(OUTFILE);
 
 
-# $(ARGS2) $(BASH2) $(VALGRIIND) $(CLS)
+# $(ARGS2) $(BASH2) $(VALGRIND) $(CLS)
 define mandatory
 	@$(call random_shmol_cat, teshting ... $(word 1, $^): !, "$(1)", $(4), )
 	-$(3) ./$(word 1, $^) $(INFILE) $(1) $(OUTFILE)
@@ -98,6 +98,6 @@ endef
 
 CLS = \033[2J\033[H
 RESET = \033[0m
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - -  - VALGRIIND
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - -  - -  - VALGRIND
 VALGRIND = valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -s --trace-children=yes --track-fds=yes
 # ------------------------------------------------------------------------------------------------------------- >
