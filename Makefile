@@ -36,7 +36,7 @@ a: libft $(NAME) files
 b: libft $(NAME_BONUS) files
 	@$(call random_shmol_cat, teshting ... $@ !, "$(word 2, $^):", $(CLS)\n, )
 	./$(word 2, $^) here_doc END $(ARGS3) $(OUTFILE)
-	@echo "\n\tOutfile content:"
+	@echo -e "\n\tOutfile content:"
 	@cat $(OUTFILE)
 
 m: libft $(NAME) files
@@ -72,13 +72,13 @@ define mandatory
 	@clear
 	@$(call random_shmol_cat, teshting ... $(NAME): !, "$(1)", , )
 	-./$(NAME) $(INFILE) $(1) $(OUTFILE)
-	@echo "\n\tOutfile content:"
+	@echo -e "\n\tOutfile content:"
 	@cat $(OUTFILE)
 	@$(call random_shmol_cat, control output should be identical:, , , )
 	-< $(INFILE) $(2) > $(OUTFILE_OK)
-	@echo "\n\tOutfile control content:"
+	@echo -e "\n\tOutfile control content:"
 	@cat $(OUTFILE_OK)
-	@echo "\n\t\033[5m~ Press Enter to continue...\033[0m"; \
+	@echo -e "\n\t\033[5m~ Press Enter to continue...\033[0m"; \
  	read -p "" key
 endef
 
@@ -86,13 +86,13 @@ define mandatory_valgrind
 	@clear
 	@$(call random_shmol_cat, teshting ... $@ !, "$(NAME):", , )
 	-$(VALGRIND) ./$(NAME) $(INFILE) $(1) $(OUTFILE)
-	@echo "\n\tOutfile content:"
+	@echo -e "\n\tOutfile content:"
 	@cat $(OUTFILE)
 	@$(call random_shmol_cat, teshting: $(1) !, valgrinining:, , )
 	< $(INFILE) $(2) > $(OUTFILE_OK)
-	@echo "\n\tOutfile control content:"
+	@echo -e "\n\tOutfile control content:"
 	@cat $(OUTFILE_OK)
-	@echo "\n\t\033[5m~ Press Enter to continue...\033[0m"; \
+	@echo -e "\n\t\033[5m~ Press Enter to continue...\033[0m"; \
  	read -p "" key
 endef
 
@@ -271,7 +271,7 @@ pad_word = $(BLINK)$(shell printf "%$(1)s" "$(2)")$(RESET)
 # @$(call print_cat, $(CLEAR), $(body), $(eye), $(txt), $(call pad_word, 12, "The⠀Cake"), $(call pad_word, 12, "Is⠀A⠀Lie..."));
 # print_cat (resest?)(color_cat)(color_eyes)(color_text)($(padded_txt_top))($(padded_txt_bot))
 define print_cat
-    @echo "$(1)$(2)\
+    @echo -e "$(1)$(2)\
 	\t\t\t\t\t\t\t	⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠒⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n\
 	\t\t\t\t\t\t\t	⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠇⠀⠘⡄⠀⠀⠀⠀⠀⠀⣀⠀⠀\n\
 	\t\t\t\t\t\t\t	⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡜⠀⠀⠀⠁⠉⠉⠉⠒⠊⠉⠀⡇⠀\n\
@@ -297,7 +297,7 @@ define random_cat
 	COLOR=$$(printf "\033[38;5;%dm" $$(shuf -i 0-255 -n 1)); \
 	COLOR2=$$(printf "\033[38;5;%dm" $$(shuf -i 0-255 -n 1)); \
 	COLOR3=$$(printf "\033[38;5;%dm" $$(shuf -i 0-255 -n 1)); \
-    echo "$(3)$${COLOR}\
+    echo -e "$(3)$${COLOR}\
 	\t\t\t\t\t\t\t	⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠒⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀\n\
 	\t\t\t\t\t\t\t	⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠇⠀⠘⡄⠀⠀⠀⠀⠀⠀⣀⠀⠀\n\
 	\t\t\t\t\t\t\t	⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡜⠀⠀⠀⠁⠉⠉⠉⠒⠊⠉⠀⡇⠀\n\
@@ -319,7 +319,7 @@ endef
 # --------------------------------------------------------------------------------- >
 # @$(call shmol_cat_color, $(color_cat), $(color_txt), text1, txt2, $(CLS), $(RESET));
 define shmol_cat_color
-	echo "$(5)$(2)\
+	echo -e "$(5)$(2)\
 	\tにゃ~$(1)\t⠀╱|、\n\
 	\t\t(˚ˎ。7⠀⠀⠀$(2)~ $(3) ~$(1)\n\
 	\t\t⠀|、˜\\\\\t\t$(2)$(4)$(1)\n\
@@ -331,7 +331,7 @@ endef
 define random_shmol_cat
 	COLOR=$$(printf "\033[38;5;%dm" $$(shuf -i 0-255 -n 1)); \
 	COLOR2=$$(printf "\033[38;5;%dm" $$(shuf -i 0-255 -n 1)); \
-	echo "$(3)$${COLOR2}\
+	echo -e "$(3)$${COLOR2}\
 	\tにゃ~$${COLOR}\t⠀╱|、\n\
 	\t\t(˚ˎ。7⠀⠀⠀$${COLOR2}~ $(1) ~$${COLOR}\n\
 	\t\t⠀|、˜\\\\\t\t$${COLOR2}~ $(2)$${COLOR}\n\
@@ -346,7 +346,7 @@ rscs:
 define random_shmol_cat_surligne
 	COLOR=$$(printf "\033[0m\033[38;5;%dm" $$(shuf -i 0-255 -n 1)); \
 	COLOR2=$$(printf "\033[48;5;%dm" $$(shuf -i 0-255 -n 1)); \
-	echo "$(3)$${COLOR2}\
+	echo -e "$(3)$${COLOR2}\
 	\tにゃ~$${COLOR}\t⠀╱|、\n\
 	\t\t(˚ˎ。7⠀⠀⠀$${COLOR2}~ $(1) ~$${COLOR}\n\
 	\t\t⠀|、˜\\\\\t\t$${COLOR2}~ $(2)$${COLOR}\n\
@@ -359,7 +359,7 @@ rscb:
 define random_shmol_cat_blink
 	COLOR=$$(printf "\033[0m\033[38;5;%dm" $$(shuf -i 0-255 -n 1)); \
 	COLOR2=$$(printf "\e[5m\033[38;5;%dm" $$(shuf -i 0-255 -n 1)); \
-	echo "$(3)\n$${COLOR2}\
+	echo -e "$(3)\n$${COLOR2}\
 	\tにゃ~$${COLOR}\t⠀╱|、\n\
 	\t\t(˚ˎ。7⠀⠀⠀$${COLOR2}~ $(1) ~$${COLOR}\n\
 	\t\t⠀|、˜\\\\\t\t$${COLOR2}~ $(2)$${COLOR}\n\
@@ -370,7 +370,7 @@ endef
 # @$(call shmol_cat_error, $(RED), $(RED_L));
 # $(1) = $(color_cat), $(2) = $(color_text)	NO CLS
 define shmol_cat_error
-	echo "$(2)\
+	echo -e "$(2)\
 	\tにゃ~$(1)\t⠀╱|、\n\
 	\t\t(˚ˎ。7⠀⠀⠀$(2)~ somshin wen wong ~$(1)\n\
 	\t\t⠀|、˜\\\\\n\
